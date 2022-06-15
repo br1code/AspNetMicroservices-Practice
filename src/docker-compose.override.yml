@@ -15,6 +15,29 @@ services:
     ports:
       - "6379:6379"
 
+  discountdb:
+    container_name: discountdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=DiscountDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  pgadmin:
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@aspnetrun.com
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/root/.pgadmin
+
   portainer:
     container_name: portainer
     restart: always
@@ -22,8 +45,8 @@ services:
       - "8080:8000" # 8080 and NOT 8000, not sure about this port config
       - "9000:9000" # but this one works!
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
 
   catalog.api:
     container_name: catalog.api
@@ -43,4 +66,14 @@ services:
     depends_on:
       - basketdb
     ports:
-      - "8001:80"
+      - "8001:80" # host:container
+
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin;"
+    depends_on:
+      - discountdb
+    ports:
+      - "8002:80" # host:container
