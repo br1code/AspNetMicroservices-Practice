@@ -1,13 +1,18 @@
-﻿{
+{
   "profiles": {
     "Discount.Grpc": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5020;https://localhost:7020",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5020;https://localhost:7020",
+      "dotnetRunMessages": true
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }
